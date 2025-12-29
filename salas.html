@@ -2,54 +2,56 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Salas Online</title>
+<title>Salas Online - Mobile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #e0f7fa;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background:#e8f5e9;
+    margin:0;
+    padding:0;
+    text-align:center;
 }
-h2 { margin: 20px 0; color: #00796b; }
+h2 { margin:20px 0; color:#2e7d32; }
 .sala {
-    background: white;
-    margin: 15px auto;
-    padding: 15px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 350px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    background:#ffffff;
+    margin:10px auto;
+    padding:15px;
+    border-radius:12px;
+    width:90%;
+    max-width:400px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
     transition: transform 0.2s;
 }
 .sala:hover { transform: scale(1.03); }
 .botao {
-    background:#00796b;
+    background:#2e7d32;
     color:white;
-    padding:10px;
-    text-align:center;
-    border-radius:5px;
+    padding:15px;
+    border:none;
+    border-radius:8px;
     display:block;
     text-decoration:none;
     margin-top:10px;
-    font-weight: bold;
+    font-size:18px;
+    font-weight:bold;
 }
 form {
     background:white;
     padding:15px;
     margin:20px auto;
-    border-radius:10px;
+    border-radius:12px;
     width:90%;
-    max-width:350px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    max-width:400px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
 }
 input, select {
-    width: 90%;
-    padding:10px;
-    margin:5px 0;
-    border-radius:5px;
+    width:90%;
+    padding:12px;
+    margin:8px 0;
+    border-radius:6px;
     border:1px solid #ccc;
+    font-size:16px;
 }
 </style>
 </head>
@@ -98,9 +100,11 @@ function atualizarSalas() {
     container.innerHTML = "";
     salas.forEach(sala => {
         let vagas = carregarVagas(sala.valor);
+        let cor = sala.tipo === "privada" ? "#c8e6c9" : "#a5d6a7";
         let div = document.createElement("div");
         div.className = "sala";
-        div.innerHTML = `<h3>Sala ${sala.tipo === "privada" ? "Privada" : "Pública"} R$ ${sala.valor}</h3>
+        div.style.background = cor;
+        div.innerHTML = `<h3>${sala.tipo === "privada" ? "Privada" : "Pública"} R$ ${sala.valor}</h3>
                          <p id="vagas${sala.valor}"><strong>Vagas:</strong> ${vagas}</p>
                          <a class="botao" href="#" onclick="participar(${sala.valor},'${sala.tipo}')">Participar</a>`;
         container.appendChild(div);
