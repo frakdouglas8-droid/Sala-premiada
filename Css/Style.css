@@ -1,105 +1,63 @@
 body {
-  font-family: 'Roboto', sans-serif;
-  background: linear-gradient(135deg, #6a11cb, #2575fc);
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: #fff;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.login-container, .welcome-container, .salas-container {
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
 }
 
-.login-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  animation: slideDown 1s ease-out;
+.logo { width: 120px; margin-bottom: 20px; }
+.logo-box h1 { font-size: 36px; margin:0; font-weight:700; }
+.slogan { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
 }
 
-@keyframes slideDown {
-  from { transform: translateY(-50px); opacity:0; }
-  to { transform: translateY(0); opacity:1; }
+.card {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
 
-.login-box h1 {
-  font-size: 32px;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
+.red {background:#ff4b5c;}
+.blue {background:#1e90ff;}
+.green {background:#2ecc71;}
+.yellow {background:#f1c40f;}
+.orange {background:#e67e22;}
+.purple {background:#9b59b6;}
 
-.login-box p {
-  margin-bottom: 25px;
-  font-size: 16px;
+.btn, .btn-start { 
+    padding: 14px 30px;
+    border:none; border-radius:12px;
+    background: linear-gradient(45deg,#ff512f,#dd2476);
+    color:#fff; font-size:18px; cursor:pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-
-.login-box input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: none;
-  font-size: 16px;
-  outline: none;
-}
-
-.btn {
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 12px;
-  background-color: #ff512f;
-  background-image: linear-gradient(45deg, #ff512f, #dd2476);
-  color: #fff;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-
-.extras {
-  margin-top: 20px;
-  font-size: 14px;
-}
-
-.extras a {
-  color: #fff;
-  text-decoration: underline;
-  margin-right: 10px;
-}
-
-.extras span {
-  margin: 0 10px;
-}
-
-.btn-google {
-  background-color: #fff;
-  color: #333;
-  border-radius: 12px;
-  padding: 10px 0;
-  width: 100%;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.btn-google:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
+.btn:hover, .btn-start:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3);}
