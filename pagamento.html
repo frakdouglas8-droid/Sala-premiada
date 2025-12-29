@@ -2,33 +2,64 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Pagamento PIX</title>
+<title>Pagamento PIX - Mobile</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial; background:#f2f2f2; text-align:center; }
-.box { background:white; margin:30px; padding:20px; border-radius:8px; }
-button { padding:10px 20px; margin-top:10px; border:none; background:#0d6efd; color:white; border-radius:5px; cursor:pointer; }
+body {
+    font-family: Arial, sans-serif;
+    background:#e8f5e9;
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+h2 { margin:20px 0; color:#2e7d32; }
+.box {
+    background:white;
+    margin:30px auto;
+    padding:25px;
+    border-radius:15px;
+    width:90%;
+    max-width:400px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+button {
+    padding:18px;
+    margin-top:20px;
+    border:none;
+    background:#2e7d32;
+    color:white;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    width:80%;
+}
+button:hover {
+    background:#1b5e20;
+}
 </style>
 </head>
 <body>
 
 <div class="box">
     <h2>Pagamento PIX</h2>
-    <p id="valor"></p>
-    <p>Chave PIX:</p>
-    <strong>pix@seudominio.com</strong>
+    <p id="valor" style="font-size:20px; font-weight:bold;"></p>
+    <p style="font-size:16px;">Chave PIX:</p>
+    <strong style="font-size:18px;">pix@seudominio.com</strong>
     <br>
-    <button onclick="copiarPIX()">Copiar PIX</button>
+    <button onclick="copiarPIX()">Copiar Chave PIX</button>
 </div>
 
 <script>
+// Pega o valor da sala pelo parâmetro URL
 const params = new URLSearchParams(window.location.search);
 const v = params.get("valor");
 document.getElementById("valor").innerText = "Valor: R$ " + v + ",00";
 
+// Copiar PIX para área de transferência
 function copiarPIX() {
     navigator.clipboard.writeText("pix@seudominio.com").then(() => {
-        alert("Chave PIX copiada!");
+        alert("Chave PIX copiada com sucesso!");
     });
 }
 </script>
