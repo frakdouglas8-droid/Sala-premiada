@@ -41,52 +41,54 @@ h2 {
 
 <h2>Salas disponíveis</h2>
 
+<!-- SALAS PRIVADAS -->
 <div class="sala">
-    <h3>Sala R$ 2,00</h3>
+    <h3>Sala Privada R$ 2,00</h3>
     <p id="vagas2">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(2)">Participar</a>
+    <a class="botao" href="#" onclick="participarPrivada(2)">Participar</a>
 </div>
 
 <div class="sala">
-    <h3>Sala R$ 5,00</h3>
+    <h3>Sala Privada R$ 5,00</h3>
     <p id="vagas5">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(5)">Participar</a>
+    <a class="botao" href="#" onclick="participarPrivada(5)">Participar</a>
 </div>
 
+<!-- SALAS PÚBLICAS -->
 <div class="sala">
-    <h3>Sala R$ 10,00</h3>
+    <h3>Sala Pública R$ 10,00</h3>
     <p id="vagas10">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(10)">Participar</a>
+    <a class="botao" href="#" onclick="participarPublica(10)">Participar</a>
 </div>
 
 <div class="sala">
-    <h3>Sala R$ 20,00</h3>
+    <h3>Sala Pública R$ 20,00</h3>
     <p id="vagas20">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(20)">Participar</a>
+    <a class="botao" href="#" onclick="participarPublica(20)">Participar</a>
 </div>
 
 <div class="sala">
-    <h3>Sala R$ 30,00</h3>
+    <h3>Sala Pública R$ 30,00</h3>
     <p id="vagas30">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(30)">Participar</a>
+    <a class="botao" href="#" onclick="participarPublica(30)">Participar</a>
 </div>
 
 <div class="sala">
-    <h3>Sala R$ 40,00</h3>
+    <h3>Sala Pública R$ 40,00</h3>
     <p id="vagas40">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(40)">Participar</a>
+    <a class="botao" href="#" onclick="participarPublica(40)">Participar</a>
 </div>
 
 <div class="sala">
-    <h3>Sala R$ 50,00</h3>
+    <h3>Sala Pública R$ 50,00</h3>
     <p id="vagas50">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(50)">Participar</a>
+    <a class="botao" href="#" onclick="participarPublica(50)">Participar</a>
 </div>
 
 <div class="sala">
-    <h3>Sala R$ 100,00</h3>
+    <h3>Sala Pública R$ 100,00</h3>
     <p id="vagas100">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(100)">Participar</a>
+    <a class="botao" href="#" onclick="participarPublica(100)">Participar</a>
 </div>
 
 <script>
@@ -100,8 +102,8 @@ function carregarVagas(valor) {
     document.getElementById("vagas" + valor).innerText = "Vagas: " + vagas;
 }
 
-// Função do botão Participar
-function participar(valor) {
+// Participar sala privada (10% plataforma, 5% criador)
+function participarPrivada(valor) {
     let vagas = parseInt(localStorage.getItem("vagas_" + valor));
     if (vagas <= 0) {
         alert("Sala cheia!");
@@ -109,69 +111,18 @@ function participar(valor) {
     }
     vagas--;
     localStorage.setItem("vagas_" + valor, vagas);
-    // Redireciona para pagamento com valor dinâmico
+
+    let total = valor;
+    let plataforma = (total * 10)/100;
+    let criador = (total * 5)/100;
+    let usuario = total - (plataforma + criador);
+
+    alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nCriador da sala: R$${criador}\nVocê: R$${usuario}`);
     window.location.href = "pagamento.html?valor=" + valor;
 }
 
-// Carregar todas as vagas ao abrir a página
-[2,5,10,20,30,40,50,100].forEach(v => carregarVagas(v));
-</script>
-
-</body>
-</html>    <h3>Sala R$ 5,00</h3>
-    <p id="vagas5">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(5)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala R$ 10,00</h3>
-    <p id="vagas10">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(10)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala R$ 20,00</h3>
-    <p id="vagas20">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(20)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala R$ 30,00</h3>
-    <p id="vagas30">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(30)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala R$ 40,00</h3>
-    <p id="vagas40">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(40)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala R$ 50,00</h3>
-    <p id="vagas50">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(50)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala R$ 100,00</h3>
-    <p id="vagas100">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participar(100)">Participar</a>
-</div>
-
-<script>
-// Função para carregar vagas no localStorage
-function carregarVagas(valor) {
-    let vagas = localStorage.getItem("vagas_" + valor);
-    if (vagas === null) {
-        vagas = 20;
-        localStorage.setItem("vagas_" + valor, vagas);
-    }
-    document.getElementById("vagas" + valor).innerText = "Vagas: " + vagas;
-}
-
-// Função do botão Participar
-function participar(valor) {
+// Participar sala pública (15% plataforma)
+function participarPublica(valor) {
     let vagas = parseInt(localStorage.getItem("vagas_" + valor));
     if (vagas <= 0) {
         alert("Sala cheia!");
@@ -179,6 +130,12 @@ function participar(valor) {
     }
     vagas--;
     localStorage.setItem("vagas_" + valor, vagas);
+
+    let total = valor;
+    let plataforma = (total * 15)/100;
+    let usuario = total - plataforma;
+
+    alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nVocê: R$${usuario}`);
     window.location.href = "pagamento.html?valor=" + valor;
 }
 
