@@ -2,11 +2,12 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Pagamento</title>
+<title>Pagamento PIX</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial; background: #f2f2f2; text-align:center; }
-.box { background: white; margin:30px; padding:20px; border-radius:8px; }
+body { font-family: Arial; background:#f2f2f2; text-align:center; }
+.box { background:white; margin:30px; padding:20px; border-radius:8px; }
+button { padding:10px 20px; margin-top:10px; border:none; background:#0d6efd; color:white; border-radius:5px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -16,12 +17,20 @@ body { font-family: Arial; background: #f2f2f2; text-align:center; }
     <p id="valor"></p>
     <p>Chave PIX:</p>
     <strong>pix@seudominio.com</strong>
+    <br>
+    <button onclick="copiarPIX()">Copiar PIX</button>
 </div>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const v = params.get("valor");
 document.getElementById("valor").innerText = "Valor: R$ " + v + ",00";
+
+function copiarPIX() {
+    navigator.clipboard.writeText("pix@seudominio.com").then(() => {
+        alert("Chave PIX copiada!");
+    });
+}
 </script>
 
 </body>
