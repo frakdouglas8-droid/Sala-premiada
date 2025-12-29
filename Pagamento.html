@@ -4,35 +4,22 @@
 <meta charset="UTF-8">
 <title>Pagamento PIX</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body { font-family: Arial; background:#f2f2f2; text-align:center; }
-.box { background:white; margin:30px; padding:20px; border-radius:8px; }
-button { padding:10px 20px; margin-top:10px; border:none; background:#0d6efd; color:white; border-radius:5px; cursor:pointer; }
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
 <div class="box">
-    <h2>Pagamento PIX</h2>
-    <p id="valor"></p>
-    <p>Chave PIX:</p>
-    <strong>pix@seudominio.com</strong>
-    <br>
-    <button onclick="copiarPIX()">Copiar PIX</button>
+<h2>Pagamento PIX</h2>
+<p id="valor"></p>
+<p>Chave PIX:</p>
+<strong>pix@seudominio.com</strong>
+<br>
+<button onclick="copiarPIX()" class="botao">Copiar Chave PIX</button>
+<p id="detalhes"></p>
+<button onclick="voltarSalas()" class="botao">Voltar para Salas</button>
 </div>
-
+<script src="js/app.js"></script>
 <script>
-const params = new URLSearchParams(window.location.search);
-const v = params.get("valor"); // pega o valor da sala
-document.getElementById("valor").innerText = "Valor: R$ " + v + ",00";
-
-// Função para copiar chave PIX
-function copiarPIX() {
-    navigator.clipboard.writeText("pix@seudominio.com").then(() => {
-        alert("Chave PIX copiada!");
-    });
-}
+carregarPagamento();
 </script>
-
 </body>
 </html>
