@@ -2,109 +2,19 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Sala Ativa</title>
+<title>Salas Online</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-    margin: 0;
-}
-
-header {
-    background: #212529;
-    color: white;
-    padding: 15px;
-    text-align: center;
-}
-
-.container {
-    padding: 15px;
-}
-
-.box {
-    background: white;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.status {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.vagas {
-    color: #198754;
-}
-
-.fechada {
-    color: red;
-}
-
-.lista {
-    list-style: none;
-    padding: 0;
-}
-
-.lista li {
-    padding: 6px;
-    border-bottom: 1px solid #ddd;
-}
-
-.botao {
-    width: 100%;
-    padding: 10px;
-    background: #0d6efd;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-}
-</style>
+<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-
-<header>
-    <h1>Sala R$ 10,00</h1>
-    <p>Tipo: Sala Livre</p>
-</header>
-
-<div class="container">
-
-    <div class="box">
-        <p class="status">Status: <span class="vagas">ABERTA</span></p>
-        <p>Vagas: <strong>5 / 20</strong></p>
-    </div>
-
-    <div class="box">
-        <h3>Participantes</h3>
-        <ul class="lista">
-            <li>João</li>
-            <li>Maria</li>
-            <li>Carlos</li>
-            <li>Ana</li>
-            <li>Pedro</li>
-        </ul>
-    </div>
-
-    <div class="box">
-        <h3>Regras da Sala</h3>
-        <p><strong>Sala Livre:</strong></p>
-        <ul>
-            <li>Qualquer pessoa pode participar</li>
-            <li><strong>15% do valor é destinado à plataforma</strong></li>
-            <li>85% é destinado à premiação</li>
-        </ul>
-
-        <p><strong>Sala Privada:</strong></p>
-        <ul>
-            <li>Somente convidados participam</li>
-            <li>10% para a plataforma</li>
-            <li>5% para o criador da sala</li>
-            <li>85% para a premiação</li>
+<h2>Salas Disponíveis</h2>
+<div id="salasExistentes"></div>
+<script src="js/app.js"></script>
+<script>
+initSalas();
+</script>
+</body>
+</html>            <li>85% para a premiação</li>
         </ul>
     </div>
 
