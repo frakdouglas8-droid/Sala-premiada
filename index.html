@@ -2,129 +2,176 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Salas Premiadas</title>
+<title>Salas Online - Mobile App</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<a href="criar-sala.html">Criar Sala</a>
-
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #f1f1f1;
-    margin: 0;
-    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background:#e8f5e9;
+    margin:0;
+    padding:0;
+    text-align:center;
 }
-
-header {
-    background: #0d6efd;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-.container {
-    padding: 15px;
-}
-
-.section {
-    background: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.section h2 {
-    margin-top: 0;
-}
-
+h2 { margin:20px 0; color:#2e7d32; }
 .sala {
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    margin-bottom: 10px;
+    background:#ffffff;
+    margin:10px auto;
+    padding:18px;
+    border-radius:15px;
+    width:90%;
+    max-width:400px;
+    box-shadow:0 6px 12px rgba(0,0,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position:relative;
 }
-
+.sala:hover { transform: scale(1.05); box-shadow:0 8px 16px rgba(0,0,0,0.4);}
+.sala .icon {
+    position:absolute;
+    top:10px;
+    right:10px;
+    font-size:24px;
+}
 .botao {
-    display: inline-block;
-    margin-top: 8px;
-    padding: 8px 12px;
-    background: #198754;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
+    background:#2e7d32;
+    color:white;
+    padding:16px;
+    border:none;
+    border-radius:10px;
+    display:block;
+    text-decoration:none;
+    margin-top:12px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition: background 0.2s;
 }
-
-.botao:hover {
-    background: #146c43;
+.botao:hover { background:#1b5e20; }
+.botao:disabled {
+    background:#9e9e9e;
+    cursor:not-allowed;
 }
-
-footer {
-    text-align: center;
-    font-size: 12px;
-    padding: 15px;
-    color: #555;
+form {
+    background:white;
+    padding:15px;
+    margin:20px auto;
+    border-radius:12px;
+    width:90%;
+    max-width:400px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
+}
+input, select {
+    width:90%;
+    padding:12px;
+    margin:8px 0;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:16px;
 }
 </style>
 </head>
-
 <body>
 
-<header>
-    <h1>Salas Premiadas</h1>
-    <p>Plataforma de entretenimento social</p>
-</header>
+<h2>Salas Disponíveis</h2>
+<div id="salasExistentes"></div>
 
-<div class="container">
+<h2>Criar Nova Sala</h2>
+<form id="criarSalaForm">
+    <input type="number" id="valorSala" placeholder="Valor da sala (ex: 15)" required>
+    <select id="tipoSala" required>
+        <option value="">Tipo de sala</option>
+        <option value="privada">Privada</option>
+        <option value="publica">Pública</option>
+    </select>
+    <button type="submit" class="botao">Criar Sala</button>
+</form>
 
-    <!-- SALAS LIVRES -->
-    <div class="section">
-        <h2>Salas Livres</h2>
-        <p>Salas abertas para qualquer pessoa participar. Cada sala possui 20 participantes.</p>
-        <p><strong>Distribuição:</strong> 15% plataforma • 85% premiação</p>
+<script>
+// Lista inicial de salas
+let salas = [
+    {valor:2, tipo:"privada"},
+    {valor:5, tipo:"privada"},
+    {valor:10, tipo:"publica"},
+    {valor:20, tipo:"publica"},
+    {valor:30, tipo:"publica"},
+    {valor:40, tipo:"publica"},
+    {valor:50, tipo:"publica"},
+    {valor:100, tipo:"publica"}
+];
 
-        <div class="sala">Sala R$ 2,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 5,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 10,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 20,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 30,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 40,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 50,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-        <div class="sala">Sala R$ 100,00 — 20 pessoas <br><a class="botao" href="inscricao.html">Entrar</a>
-</div>
-    </div>
+// Função para carregar vagas
+function carregarVagas(valor) {
+    let vagas = localStorage.getItem("vagas_" + valor);
+    if(vagas === null) {
+        vagas = 20;
+        localStorage.setItem("vagas_" + valor, vagas);
+    }
+    return parseInt(vagas);
+}
 
-    <!-- SALAS PRIVADAS -->
-    <div class="section">
-        <h2>Salas Privadas</h2>
-        <p>Salas criadas por usuários para eventos e grupos fechados.</p>
-        <p><strong>Distribuição:</strong> 10% plataforma • 5% criador • 85% premiação</p>
+// Atualiza exibição das salas
+function atualizarSalas() {
+    const container = document.getElementById("salasExistentes");
+    container.innerHTML = "";
+    salas.forEach(sala => {
+        let vagas = carregarVagas(sala.valor);
+        let cor = sala.tipo === "privada" ? "#c8e6c9" : "#a5d6a7";
+        let icone = sala.tipo === "privada" ? "🔒" : "👥";
+        let div = document.createElement("div");
+        div.className = "sala";
+        div.style.background = cor;
+        div.innerHTML = `<div class="icon">${icone}</div>
+                         <h3>${sala.tipo === "privada" ? "Privada" : "Pública"} R$ ${sala.valor}</h3>
+                         <p><strong>Vagas:</strong> ${vagas}</p>
+                         <button class="botao" ${vagas <= 0 ? "disabled" : ""} onclick="participar(${sala.valor},'${sala.tipo}')">Participar</button>`;
+        container.appendChild(div);
+    });
+}
 
-        <a class="botao" href="criar-sala.html">Criar sala privada</a>
+// Participar de uma sala
+function participar(valor, tipo) {
+    let vagas = parseInt(localStorage.getItem("vagas_" + valor));
+    if(vagas <= 0){
+        alert("Sala cheia!");
+        return;
+    }
+    vagas--;
+    localStorage.setItem("vagas_" + valor, vagas);
 
-    </div>
+    let total = valor;
+    let plataforma, criador, usuario;
+    if(tipo === "privada") {
+        plataforma = (total*10)/100;
+        criador = (total*5)/100;
+        usuario = total - (plataforma + criador);
+    } else {
+        plataforma = (total*15)/100;
+        usuario = total - plataforma;
+    }
 
-    <!-- REGRAS -->
-    <div class="section">
-        <h2>Regras Importantes</h2>
-        <ul>
-            <li>Participação voluntária.</li>
-            <li>Não há investimento nem retorno garantido.</li>
-            <li>Sorteios ocorrem conforme regras da sala.</li>
-            <li>Percentuais aplicados apenas à organização das salas.</li>
-        </ul>
-    </div>
+    alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\n${tipo==='privada' ? 'Criador: R$'+criador+'\n':''}Você: R$${usuario}`);
 
-</div>
+    // Redireciona para pagamento PIX
+    window.location.href = `pagamento.html?valor=${valor}`;
+    atualizarSalas();
+}
 
-<footer>
-    <p>Uso exclusivo para entretenimento social.</p>
-</footer>
+// Criar nova sala via formulário
+document.getElementById("criarSalaForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let valor = parseInt(document.getElementById("valorSala").value);
+    let tipo = document.getElementById("tipoSala").value;
+    if(valor && tipo){
+        salas.push({valor:valor,tipo:tipo});
+        localStorage.setItem("vagas_" + valor, 20);
+        atualizarSalas();
+        document.getElementById("criarSalaForm").reset();
+        alert("Sala criada!");
+    }
+});
+
+// Inicializa exibição das salas
+atualizarSalas();
+</script>
 
 </body>
 </html>
