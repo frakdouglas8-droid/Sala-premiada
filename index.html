@@ -2,42 +2,30 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Salas Online - Login</title>
+<title>Sala Premiada</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<div class="login-container">
-  <div class="login-box">
-    <h1>Bem-vindo!</h1>
-    <p>Entre ou cadastre-se para começar</p>
-    <form id="loginForm">
-      <input type="text" id="nome" placeholder="Nome completo" required>
-      <input type="email" id="email" placeholder="E-mail" required>
-      <input type="tel" id="telefone" placeholder="Telefone">
-      <input type="password" id="senha" placeholder="Senha" required>
-      <button type="submit" class="btn">Entrar / Cadastrar</button>
-    </form>
-    <div class="extras">
-      <a href="#" id="recuperarSenha">Recuperar senha</a>
-      <span>ou</span>
-      <button class="btn-google">Login com Google</button>
+<div class="welcome-container">
+    <div class="logo-box">
+        <img src="img/logo.png" alt="Sala Premiada Logo" class="logo">
+        <h1>Sala Premiada</h1>
+        <p class="slogan">Sua plataforma de sorteios e diversão!</p>
     </div>
-  </div>
+
+    <div class="cards-container">
+        <div class="card red">R$2</div>
+        <div class="card blue">R$5</div>
+        <div class="card green">R$10</div>
+        <div class="card yellow">R$20</div>
+        <div class="card orange">R$50</div>
+        <div class="card purple">R$100</div>
+    </div>
+
+    <button class="btn-start" onclick="window.location.href='login.html'">Entrar / Cadastrar</button>
 </div>
-<script src="js/app.js"></script>
-<script>
-document.getElementById('loginForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    let nome = document.getElementById('nome').value.trim();
-    let email = document.getElementById('email').value.trim();
-    let telefone = document.getElementById('telefone').value.trim();
-    let senha = document.getElementById('senha').value.trim();
-    if(!nome || !email || !senha){ alert('Preencha todos os campos obrigatórios!'); return; }
-    localStorage.setItem('usuario', JSON.stringify({nome,nome,email,telefone,senha,saldo:0}));
-    window.location.href = 'salas.html';
-});
-</script>
+<script src="app.js"></script>
 </body>
 </html>
