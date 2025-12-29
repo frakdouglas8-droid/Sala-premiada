@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Criar Sala</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 0;
+}
+
+header {
+    background: #0d6efd;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+.container {
+    padding: 15px;
+}
+
+.box {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.info {
+    background: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.botao {
+    background: #198754;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Criar Nova Sala</h1>
+</header>
+
+<div class="container">
+
+    <div class="box">
+        <label>Valor da Sala</label>
+        <select id="valor" onchange="calcular()">
+            <option value="">Selecione</option>
+            <option value="2">R$ 2,00</option>
+            <option value="5">R$ 5,00</option>
+            <option value="10">R$ 10,00</option>
+            <option value="20">R$ 20,00</option>
+            <option value="30">R$ 30,00</option>
+            <option value="40">R$ 40,00</option>
+            <option value="50">R$ 50,00</option>
+            <option value="100">R$ 100,00</option>
+        </select>
+    </div>
+
+    <div class="box">
+        <label>Tipo de Sala</label>
+        <select id="tipo" onchange="calcular()">
+            <option value="">Selecione</option>
+            <option value="livre">Sala Livre</option>
+            <option value="privada">Sala Privada</option>
+        </select>
+    </div>
+
+    <div class="box info" id="resultado">
+        Selecione valor e tipo da sala
+    </div>
+
+    <div class="box">
+        <button class="botao">Criar Sala</button>
+    </div>
+
+</div>
+
+<script>
+function calcular() {
+    let valor = document.getElementById("valor").value;
+    let tipo = document.getElementById("tipo").value;
+
+    if(valor === "" || tipo === "") {
+        document.getElementById("resultado").innerHTML = 
+        "Selecione valor e tipo da sala";
+        return;
+    }
+
+    let total = valor * 20;
+    let plataforma = 0;
+    let criador = 0;
+
+    if(tipo === "livre") {
+        plataforma = total * 0.15;
+    } else {
+        plataforma = total * 0.10;
+        criador = total * 0.05;
+    }
+
+    let premio = total - plataforma - criador;
+
+    document.getElementById("resultado").innerHTML = `
+        <strong>Total arrecadado:</strong> R$ ${total.toFixed(2)}<br>
+        <strong>Plataforma:</strong> R$ ${plataforma.toFixed(2)}<br>
+        <strong>Criador:</strong> R$ ${criador.toFixed(2)}<br>
+        <strong>Premiação:</strong> R$ ${premio.toFixed(2)}
+    `;
+}
+</script>
+
+</body>
+</html>
