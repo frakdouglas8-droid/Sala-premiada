@@ -1,41 +1,76 @@
-let salas=[{valor:2,tipo:'privada'},{valor:5,tipo:'privada'},{valor:10,tipo:'publica'},{valor:20,tipo:'publica'},{valor:30,tipo:'publica'},{valor:40,tipo:'publica'},{valor:50,tipo:'publica'},{valor:100,tipo:'publica'}];
-
-function carregarVagas(valor){let v=localStorage.getItem('vagas_'+valor); if(v===null){v=20; localStorage.setItem('vagas_'+valor,v);} return parseInt(v);}
-
-function initSalas(){
-  const c=document.getElementById('salasExistentes'); c.innerHTML='';
-  salas.forEach(s=>{
-    let v=carregarVagas(s.valor);
-    let cor=s.tipo==='privada'?'#c8e6c9':'#a5d6a7';
-    let ic=s.tipo==='privada'?'🔒':'👥';
-    let d=document.createElement('div');
-    d.className='sala'; d.style.background=cor;
-    d.innerHTML=`<div class='icon'>${ic}</div><h3>${s.tipo==='privada'?'Privada':'Pública'} R$ ${s.valor}</h3><p><strong>Vagas:</strong> ${v}</p><button class='botao' ${v<=0?'disabled':''} onclick='entrarSala(${s.valor},"${s.tipo}")'>Participar</button>`;
-    c.appendChild(d);
-  });
+// Salvar e verificar usuários
+function salvarUsuario(usuario) {
+    localStorage.setItem('usuario', JSON.stringify(usuario));
 }
 
-function entrarSala(valor,tipo){
-  let v=carregarVagas(valor); if(v<=0){alert('Sala cheia!');return;} v--; localStorage.setItem('vagas_'+valor,v);
-  let u=JSON.parse(localStorage.getItem('usuario'))||{nome:'',email:''};
-  let plataforma,criador,usuario;
-  if(tipo==='privada'){plataforma=valor*0.10; criador=valor*0.05; usuario=valor-(plataforma+criador);} else {plataforma=valor*0.15; criador=0; usuario=valor-plataforma;}
-  localStorage.setItem('ultimoPagamento',JSON.stringify({nome:u.nome,email:u.email,valor:valor,plataforma:plataforma,criador:criador,usuario:usuario}));
-  window.location.href='pagamento.html';
-  initSalas();
+function getUsuario() {
+    return JSON.parse(localStorage.getItem('usuario'));
 }
 
-function carregarPagamento(){
-  let d=JSON.parse(localStorage.getItem('ultimoPagamento'));
-  if(d){document.getElementById('valor').innerText='Valor: R$ '+d.valor+',00';
-  let t=`Nome: ${d.nome}\nEmail: ${d.email}\nPlataforma: R$ ${d.plataforma}`;
-  if(d.criador>0) t+=`\nCriador: R$ ${d.criador}`; t+=`\nVocê: R$ ${d.usuario}`;
-  document.getElementById('detalhes').innerText=t;}
+// Login
+document.getElementById('loginForm')?.addEventListener('submit', function(e){
+    e.preventDefault();
+    let email = document.getElementById('email').value.trim();
+    let senha = document.getElementById('senha').value.trim();
+    let usuario = getUsuario();
+    if(!usuario || usuario.email !== email || usuario.senha !== senha){
+        alert("Usuário ou senha incorretos!");
+        return;
+    }
+    window.location.href = 'salas.html';
+});
+
+// Cadastro
+document.getElementById('cadastroForm')?.addEventListener('submit', function(e){
+    e.preventDefault();
+    let nome = document.getElementById('nome').value.trim();
+    let email = document.getElementById('email').value.trim();
+    let telefone = document.getElementById('telefone').value.trim();
+    let senha = document.getElementById('senha').value.trim();
+    if(!nome || !email || !senha){ alert('Preencha todos os campos obrigatórios!'); return; }
+    salvarUsuario({nome,email,telefone,senha,saldo:0});
+    alert("Cadastro realizado com sucesso!");
+    window.location.href='login.html';
+});
+
+// Recuperar senha
+function recuperarSenha(){
+    let usuario = getUsuario();
+    if(!usuario) return alert("Nenhum usuário cadastrado.");
+    alert(`Sua senha é: ${usuario.senha}`);
 }
 
-function copiarPIX(){navigator.clipboard.writeText('pix@seudominio.com').then(()=>{alert('Chave PIX copiada!');});}
+// Salas
+let salas = [
+    {id:1, nome:"R$2", vagas:20, participantes:0},
+    {id:2, nome:"R$5", vagas:20, participantes:0},
+    {id:3, nome:"R$10", vagas:20, participantes:0},
+    {id:4, nome:"R$20", vagas:20, participantes:0},
+    {id:5, nome:"R$50", vagas:20, participantes:0},
+    {id:6, nome:"R$100", vagas:20, participantes:0}
+];
 
-function voltarSalas(){window.location.href='salas.html';}
+function atualizarSalas(){
+    let container = document.getElementById('salasList');
+    if(!container) return;
+    container.innerHTML='';
+    salas.forEach(sala=>{
+        let div = document.createElement('div');
+        div.className = `card ${sala.nome==='R$2'?'red':sala.nome==='R$5'?'blue':sala.nome==='R$10'?'green':sala.nome==='R$20'?'yellow':sala.nome==='R$50'?'orange':'purple'}`;
+        div.id = `sala-${sala.id}`;
+        div.innerText = `${sala.nome}\nVagas: ${sala.vagas - sala.participantes}`;
+        div.onclick = ()=>entrarSala(sala.id);
+        container.appendChild(div);
+    });
+}
 
-function carregarSaldo(){document.getElementById('saldo').innerText='Saldo disponível: R$ 0,00 (simulação)';}
-function fazerSaque(){alert('Saque solicitado!');}
+function entrarSala(idSala){
+    let sala = salas.find(s=>s.id===idSala);
+    if(!sala) return alert("Sala não encontrada!");
+    if(sala.participantes >= sala.vagas) return alert("Sala cheia!");
+    sala.participantes += 1;
+    alert(`Você entrou na sala ${sala.nome}. Vagas restantes: ${sala.vagas - sala.participantes}`);
+    atualizarSalas();
+}
+
+atualizarSalas();
