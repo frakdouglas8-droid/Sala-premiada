@@ -4,20 +4,18 @@
 <meta charset="UTF-8">
 <title>Salas</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body { font-family: Arial; background: #f2f2f2; text-align:center; }
-h2 { margin-top: 20px; }
-.sala { background: white; margin:15px auto; padding:15px; border-radius:8px; width:300px; }
+body { font-family: Arial; background:#f2f2f2; text-align:center; }
+h2 { margin-top:20px; }
+.sala { background:white; margin:15px auto; padding:15px; border-radius:8px; width:300px; }
 .botao { background:#0d6efd; color:white; padding:10px; text-align:center; border-radius:5px; display:block; text-decoration:none; margin-top:10px; }
 form { background:white; padding:15px; margin:20px auto; border-radius:8px; width:300px; }
-input, select { width: 90%; padding:8px; margin:5px 0; }
+input, select { width:90%; padding:8px; margin:5px 0; }
 </style>
 </head>
 <body>
 
 <h2>Salas disponíveis</h2>
-
 <div id="salasExistentes"></div>
 
 <h2>Criar nova sala</h2>
@@ -54,7 +52,7 @@ function carregarVagas(valor) {
     return parseInt(vagas);
 }
 
-// Função para atualizar a exibição das salas
+// Atualiza exibição das salas
 function atualizarSalas() {
     const container = document.getElementById("salasExistentes");
     container.innerHTML = "";
@@ -69,7 +67,7 @@ function atualizarSalas() {
     });
 }
 
-// Função para participar de uma sala
+// Participar de uma sala
 function participar(valor, tipo) {
     let vagas = parseInt(localStorage.getItem("vagas_" + valor));
     if(vagas <= 0) {
@@ -80,17 +78,20 @@ function participar(valor, tipo) {
     localStorage.setItem("vagas_" + valor, vagas);
 
     let total = valor;
+    let plataforma, criador, usuario;
     if(tipo === "privada") {
-        let plataforma = (total*10)/100;
-        let criador = (total*5)/100;
-        let usuario = total - (plataforma + criador);
+        plataforma = (total*10)/100;
+        criador = (total*5)/100;
+        usuario = total - (plataforma + criador);
         alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nCriador: R$${criador}\nVocê: R$${usuario}`);
     } else {
-        let plataforma = (total*15)/100;
-        let usuario = total - plataforma;
+        plataforma = (total*15)/100;
+        usuario = total - plataforma;
         alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nVocê: R$${usuario}`);
     }
-    window.location.href = "pagamento.html?valor=" + valor;
+
+    // Redireciona para pagamento com PIX
+    window.location.href = `pagamento.html?valor=${valor}`;
     atualizarSalas();
 }
 
