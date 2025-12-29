@@ -2,110 +2,115 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Salas</title>
+<title>Salas Online</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body {
-    font-family: Arial;
-    background: #f2f2f2;
+    font-family: Arial, sans-serif;
+    background: #e0f7fa;
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
-
-h2 {
-    margin-top: 20px;
-}
-
+h2 { margin: 20px 0; color: #00796b; }
 .sala {
     background: white;
     margin: 15px auto;
     padding: 15px;
-    border-radius: 8px;
-    width: 300px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 350px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
 }
-
+.sala:hover { transform: scale(1.03); }
 .botao {
-    background: #0d6efd;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    border-radius: 5px;
-    display: block;
-    text-decoration: none;
-    margin-top: 10px;
+    background:#00796b;
+    color:white;
+    padding:10px;
+    text-align:center;
+    border-radius:5px;
+    display:block;
+    text-decoration:none;
+    margin-top:10px;
+    font-weight: bold;
+}
+form {
+    background:white;
+    padding:15px;
+    margin:20px auto;
+    border-radius:10px;
+    width:90%;
+    max-width:350px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+input, select {
+    width: 90%;
+    padding:10px;
+    margin:5px 0;
+    border-radius:5px;
+    border:1px solid #ccc;
 }
 </style>
 </head>
-
 <body>
 
-<h2>Salas disponíveis</h2>
+<h2>Salas Disponíveis</h2>
+<div id="salasExistentes"></div>
 
-<!-- SALAS PRIVADAS -->
-<div class="sala">
-    <h3>Sala Privada R$ 2,00</h3>
-    <p id="vagas2">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPrivada(2)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala Privada R$ 5,00</h3>
-    <p id="vagas5">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPrivada(5)">Participar</a>
-</div>
-
-<!-- SALAS PÚBLICAS -->
-<div class="sala">
-    <h3>Sala Pública R$ 10,00</h3>
-    <p id="vagas10">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPublica(10)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala Pública R$ 20,00</h3>
-    <p id="vagas20">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPublica(20)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala Pública R$ 30,00</h3>
-    <p id="vagas30">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPublica(30)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala Pública R$ 40,00</h3>
-    <p id="vagas40">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPublica(40)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala Pública R$ 50,00</h3>
-    <p id="vagas50">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPublica(50)">Participar</a>
-</div>
-
-<div class="sala">
-    <h3>Sala Pública R$ 100,00</h3>
-    <p id="vagas100">Vagas: 20</p>
-    <a class="botao" href="#" onclick="participarPublica(100)">Participar</a>
-</div>
+<h2>Criar Nova Sala</h2>
+<form id="criarSalaForm">
+    <input type="number" id="valorSala" placeholder="Valor da sala (ex: 15)" required>
+    <select id="tipoSala" required>
+        <option value="">Tipo de sala</option>
+        <option value="privada">Privada</option>
+        <option value="publica">Pública</option>
+    </select>
+    <button type="submit" class="botao">Criar Sala</button>
+</form>
 
 <script>
-// Função para carregar vagas no localStorage
+// Lista inicial de salas
+let salas = [
+    {valor:2, tipo:"privada"},
+    {valor:5, tipo:"privada"},
+    {valor:10, tipo:"publica"},
+    {valor:20, tipo:"publica"},
+    {valor:30, tipo:"publica"},
+    {valor:40, tipo:"publica"},
+    {valor:50, tipo:"publica"},
+    {valor:100, tipo:"publica"}
+];
+
+// Função para carregar vagas
 function carregarVagas(valor) {
     let vagas = localStorage.getItem("vagas_" + valor);
-    if (vagas === null) {
+    if(vagas === null) {
         vagas = 20;
         localStorage.setItem("vagas_" + valor, vagas);
     }
-    document.getElementById("vagas" + valor).innerText = "Vagas: " + vagas;
+    return parseInt(vagas);
 }
 
-// Participar sala privada (10% plataforma, 5% criador)
-function participarPrivada(valor) {
+// Atualiza exibição das salas
+function atualizarSalas() {
+    const container = document.getElementById("salasExistentes");
+    container.innerHTML = "";
+    salas.forEach(sala => {
+        let vagas = carregarVagas(sala.valor);
+        let div = document.createElement("div");
+        div.className = "sala";
+        div.innerHTML = `<h3>Sala ${sala.tipo === "privada" ? "Privada" : "Pública"} R$ ${sala.valor}</h3>
+                         <p id="vagas${sala.valor}"><strong>Vagas:</strong> ${vagas}</p>
+                         <a class="botao" href="#" onclick="participar(${sala.valor},'${sala.tipo}')">Participar</a>`;
+        container.appendChild(div);
+    });
+}
+
+// Participar de uma sala
+function participar(valor, tipo) {
     let vagas = parseInt(localStorage.getItem("vagas_" + valor));
-    if (vagas <= 0) {
+    if(vagas <= 0){
         alert("Sala cheia!");
         return;
     }
@@ -113,34 +118,39 @@ function participarPrivada(valor) {
     localStorage.setItem("vagas_" + valor, vagas);
 
     let total = valor;
-    let plataforma = (total * 10)/100;
-    let criador = (total * 5)/100;
-    let usuario = total - (plataforma + criador);
-
-    alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nCriador da sala: R$${criador}\nVocê: R$${usuario}`);
-    window.location.href = "pagamento.html?valor=" + valor;
-}
-
-// Participar sala pública (15% plataforma)
-function participarPublica(valor) {
-    let vagas = parseInt(localStorage.getItem("vagas_" + valor));
-    if (vagas <= 0) {
-        alert("Sala cheia!");
-        return;
+    let plataforma, criador, usuario;
+    if(tipo === "privada") {
+        plataforma = (total*10)/100;
+        criador = (total*5)/100;
+        usuario = total - (plataforma + criador);
+    } else {
+        plataforma = (total*15)/100;
+        usuario = total - plataforma;
     }
-    vagas--;
-    localStorage.setItem("vagas_" + valor, vagas);
 
-    let total = valor;
-    let plataforma = (total * 15)/100;
-    let usuario = total - plataforma;
+    alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\n${tipo==='privada' ? 'Criador: R$'+criador+'\n':''}Você: R$${usuario}`);
 
-    alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nVocê: R$${usuario}`);
-    window.location.href = "pagamento.html?valor=" + valor;
+    // Redireciona para pagamento PIX
+    window.location.href = `pagamento.html?valor=${valor}`;
+    atualizarSalas();
 }
 
-// Carregar todas as vagas ao abrir a página
-[2,5,10,20,30,40,50,100].forEach(v => carregarVagas(v));
+// Criar nova sala via formulário
+document.getElementById("criarSalaForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let valor = parseInt(document.getElementById("valorSala").value);
+    let tipo = document.getElementById("tipoSala").value;
+    if(valor && tipo){
+        salas.push({valor:valor,tipo:tipo});
+        localStorage.setItem("vagas_" + valor, 20);
+        atualizarSalas();
+        document.getElementById("criarSalaForm").reset();
+        alert("Sala criada!");
+    }
+});
+
+// Inicializa exibição das salas
+atualizarSalas();
 </script>
 
 </body>
