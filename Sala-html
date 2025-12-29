@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Salas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { font-family: Arial; background: #f2f2f2; text-align:center; }
+h2 { margin-top: 20px; }
+.sala { background: white; margin:15px auto; padding:15px; border-radius:8px; width:300px; }
+.botao { background:#0d6efd; color:white; padding:10px; text-align:center; border-radius:5px; display:block; text-decoration:none; margin-top:10px; }
+form { background:white; padding:15px; margin:20px auto; border-radius:8px; width:300px; }
+input, select { width: 90%; padding:8px; margin:5px 0; }
+</style>
+</head>
+<body>
+
+<h2>Salas disponíveis</h2>
+
+<div id="salasExistentes"></div>
+
+<h2>Criar nova sala</h2>
+<form id="criarSalaForm">
+    <input type="number" id="valorSala" placeholder="Valor da sala (ex: 15)" required>
+    <select id="tipoSala" required>
+        <option value="">Tipo de sala</option>
+        <option value="privada">Privada</option>
+        <option value="publica">Pública</option>
+    </select>
+    <button type="submit" class="botao">Criar Sala</button>
+</form>
+
+<script>
+// Lista inicial de salas
+let salas = [
+    {valor:2, tipo:"privada"},
+    {valor:5, tipo:"privada"},
+    {valor:10, tipo:"publica"},
+    {valor:20, tipo:"publica"},
+    {valor:30, tipo:"publica"},
+    {valor:40, tipo:"publica"},
+    {valor:50, tipo:"publica"},
+    {valor:100, tipo:"publica"}
+];
+
+// Função para carregar vagas
+function carregarVagas(valor) {
+    let vagas = localStorage.getItem("vagas_" + valor);
+    if(vagas === null) {
+        vagas = 20;
+        localStorage.setItem("vagas_" + valor, vagas);
+    }
+    return parseInt(vagas);
+}
+
+// Função para atualizar a exibição das salas
+function atualizarSalas() {
+    const container = document.getElementById("salasExistentes");
+    container.innerHTML = "";
+    salas.forEach(sala => {
+        let vagas = carregarVagas(sala.valor);
+        let div = document.createElement("div");
+        div.className = "sala";
+        div.innerHTML = `<h3>Sala ${sala.tipo === "privada" ? "Privada" : "Pública"} R$ ${sala.valor}</h3>
+                         <p id="vagas${sala.valor}">Vagas: ${vagas}</p>
+                         <a class="botao" href="#" onclick="participar(${sala.valor},'${sala.tipo}')">Participar</a>`;
+        container.appendChild(div);
+    });
+}
+
+// Função para participar de uma sala
+function participar(valor, tipo) {
+    let vagas = parseInt(localStorage.getItem("vagas_" + valor));
+    if(vagas <= 0) {
+        alert("Sala cheia!");
+        return;
+    }
+    vagas--;
+    localStorage.setItem("vagas_" + valor, vagas);
+
+    let total = valor;
+    if(tipo === "privada") {
+        let plataforma = (total*10)/100;
+        let criador = (total*5)/100;
+        let usuario = total - (plataforma + criador);
+        alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nCriador: R$${criador}\nVocê: R$${usuario}`);
+    } else {
+        let plataforma = (total*15)/100;
+        let usuario = total - plataforma;
+        alert(`Pagamento: R$${total}\nPlataforma: R$${plataforma}\nVocê: R$${usuario}`);
+    }
+    window.location.href = "pagamento.html?valor=" + valor;
+    atualizarSalas();
+}
+
+// Criar nova sala via formulário
+document.getElementById("criarSalaForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let valor = parseInt(document.getElementById("valorSala").value);
+    let tipo = document.getElementById("tipoSala").value;
+    if(valor && tipo) {
+        salas.push({valor:valor,tipo:tipo});
+        localStorage.setItem("vagas_" + valor, 20);
+        atualizarSalas();
+        document.getElementById("criarSalaForm").reset();
+        alert("Sala criada!");
+    }
+});
+
+// Inicializa exibição das salas
+atualizarSalas();
+</script>
+
+</body>
+</html>
